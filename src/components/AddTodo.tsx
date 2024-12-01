@@ -1,8 +1,11 @@
 import { FC, useState, ChangeEvent } from "react";
 import { useRedux } from "../use/useRedux";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 
 const AddTodo: FC = () => {
-  const { addHandler } = useRedux();
+  const { addDispatch } = useRedux();
   const [input, setInput] = useState("");
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -10,14 +13,24 @@ const AddTodo: FC = () => {
   };
 
   const addTaskHandler = () => {
-    addHandler(input);
-    setInput("");
+    if (input.length > 0) {
+      addDispatch(input);
+      setInput("");
+    }
   };
 
   return (
     <>
-      <input type="text" value={input} onChange={onChangeHandler} />
-      <button onClick={addTaskHandler}>Add Task</button>
+      <InputGroup className="mb-3">
+        <Form.Control
+          placeholder="Task title"
+          value={input}
+          onChange={onChangeHandler}
+        />
+        <Button variant="outline-secondary" onClick={addTaskHandler}>
+          Add task
+        </Button>
+      </InputGroup>
     </>
   );
 };

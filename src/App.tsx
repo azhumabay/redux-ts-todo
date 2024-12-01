@@ -1,10 +1,13 @@
+import { Container } from "react-bootstrap";
 import { AddTodo, TodoList } from "./components";
 
 function App() {
   return (
     <>
-      <AddTodo />
-      <TodoList />
+      <Container className="mt-5">
+        <AddTodo />
+        <TodoList />
+      </Container>
     </>
   );
 }

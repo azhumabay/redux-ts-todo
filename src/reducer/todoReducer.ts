@@ -4,11 +4,17 @@ export type Todo = {
   completed: boolean;
 };
 
-const initialState: Todo[] = [
-  { id: 1, title: "Test - 1", completed: false },
-  { id: 2, title: "Test - 1", completed: false },
-  { id: 3, title: "Test - 1", completed: true },
-];
+type InitialState = {
+  todos: Todo[];
+};
+
+const initialState: InitialState = {
+  todos: [
+    { id: 1, title: "Test - 1", completed: false },
+    { id: 2, title: "Test - 2", completed: false },
+    { id: 3, title: "Test - 3", completed: true },
+  ],
+};
 
 export const enum ACTION_TYPES {
   ADD = "ADD",
@@ -33,21 +39,35 @@ type DeleteAction = {
 
 export type TodoAction = AddAction | UpdateAction | DeleteAction;
 
-export function todoReducer(state = initialState, action: TodoAction): Todo[] {
+export function todoReducer(
+  state = initialState,
+  action: TodoAction
+): InitialState {
   switch (action.type) {
     case ACTION_TYPES.ADD:
-      return [
+      return {
         ...state,
-        { id: Date.now(), title: action.payload, completed: false },
-      ];
+        todos: [
+          ...state.todos,
+          { id: Date.now(), title: action.payload, completed: false },
+        ],
+      };
+
     case ACTION_TYPES.UPDATE:
-      return state.map((todo) =>
-        todo.id === action.payload
-          ? { ...todo, completed: !todo.completed }
-          : todo
-      );
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload
+            ? { ...todo, completed: !todo.completed }
+            : todo
+        ),
+      };
+
     case ACTION_TYPES.DELETE:
-      return state.filter((todo) => todo.id !== action.payload);
+      return {
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
+      };
     default:
       return state;
   }
