@@ -1,7 +1,10 @@
+import { AddTodo, TodoList } from "./components";
+
 function App() {
   return (
     <>
-      <div>Hello, World!</div>
+      <AddTodo />
+      <TodoList />
     </>
   );
 }
